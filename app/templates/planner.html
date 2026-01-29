@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>🛒 Mon Planning de la Semaine</h1>
+        <a href="/shopping-list" class="btn btn-primary">Voir Liste de Courses</a>
+    </div>
+
+    <div style="overflow-x: auto;">
+        <table class="planner-table">
+            <thead>
+                <tr>
+                    <th>Repas</th>
+                    {% for day in days %}
+                    <th>
+                        {{ day.strftime('%A') }}<br>
+                        <small>{{ day.strftime('%d/%m') }}</small>
+                    </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for meal_type in ["Matin", "Midi", "Soir"] %}
+                <tr>
+                    <td style="font-weight: 700; color: var(--primary-color);">{{ meal_type }}</td>
+                    {% for day in days %}
+                    <td>
+                        <div class="meal-slot">
+                            {% set current_recipe = plan_data[day][meal_type] %}
+                            {% if current_recipe %}
+                            <div class="meal-content">
+                                {{ current_recipe.title }}
+                            </div>
+                            {% endif %}
+
+                            <form action="/planner/assign" method="post" style="margin-top: 10px;">
+                                <input type="hidden" name="date_str" value="{{ day.isoformat() }}">
+                                <input type="hidden" name="meal_type" value="{{ meal_type }}">
+                                <select name="recipe_id" onchange="this.form.submit()"
+                                    style="font-size: 0.7rem; padding: 0.3rem;">
+                                    <option value="">Choisir...</option>
+                                    {% for r in recipes %}
+                                    <option value="{{ r.id }}" {% if current_recipe and current_recipe.id==r.id
+                                        %}selected{% endif %}>
+                                        {{ r.title }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </div>
+                    </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

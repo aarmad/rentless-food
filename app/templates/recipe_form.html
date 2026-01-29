@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel" style="max-width: 800px; margin: 0 auto;">
+    <h1>Nouvelle Recette</h1>
+    <form action="/recipes/add" method="post">
+        <div class="form-group">
+            <label>Titre de la recette</label>
+            <input type="text" name="title" required placeholder="Ex: Lasagnes à la bolognaise">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label>Catégorie</label>
+                <select name="category" required>
+                    <option value="Petit-déjeuner">Petit-déjeuner</option>
+                    <option value="Déjeuner">Déjeuner</option>
+                    <option value="Dîner">Dîner</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Temps de préparation (min)</label>
+                <input type="number" name="total_time" required placeholder="Ex: 45">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Ingrédients (Un par ligne, format: "quantité: nom")</label>
+            <textarea name="ingredients_raw" rows="6" required
+                placeholder="Ex: 500g: Viande hachée&#10;1: Oignon&#10;2c.à.s: Concentré de tomate"></textarea>
+            <small style="color: #666;">Note: Séparez la quantité et le nom par un ":"</small>
+        </div>
+
+        <div class="form-group">
+            <label>Instructions de préparation</label>
+            <textarea name="instructions" rows="10" required placeholder="Étape 1: ..."></textarea>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">Enregistrer la recette</button>
+            <a href="/recipes" class="btn btn-outline">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

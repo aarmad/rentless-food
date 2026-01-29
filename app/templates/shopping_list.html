@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass-panel" style="max-width: 700px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+        <div>
+            <h1>📝 Liste de Courses</h1>
+            <p style="color: #666;">Semaine du {{ start.strftime('%d/%m') }} au {{ end.strftime('%d/%m') }}</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <a href="/shopping-list/csv" class="btn btn-outline" title="Exporter en CSV">
+                <i data-lucide="file-spreadsheet"></i> CSV
+            </a>
+            <a href="/shopping-list/pdf" class="btn btn-outline" title="Exporter en PDF">
+                <i data-lucide="file-text"></i> PDF
+            </a>
+        </div>
+    </div>
+
+    {% if shopping_list %}
+    <div style="list-style: none; padding: 0;">
+        {% for item in shopping_list %}
+        <div
+            style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 1px solid #eee; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <input type="checkbox" style="width: 20px; height: 20px;">
+                <span style="font-weight: 600;">{{ item.name }}</span>
+            </div>
+            <span style="color: var(--primary-color); font-weight: 700;">{{ item.quantities }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div style="text-align: center; padding: 3rem;">
+        <p>Votre planning est vide. Ajoutez des repas pour générer une liste.</p>
+        <a href="/planner" class="btn btn-primary" style="margin-top: 1rem;">Aller au planning</a>
+    </div>
+    {% endif %}
+
+    <div style="margin-top: 2rem; border-top: 2px solid var(--glass-border); padding-top: 1rem;">
+        <button class="btn btn-primary" onclick="window.print()"><i data-lucide="printer"></i> Imprimer la
+            liste</button>
+    </div>
+</div>
+
+<style>
+    @media print {
+
+        .navbar,
+        .btn,
+        .nav-links,
+        input[type="checkbox"] {
+            display: none !important;
+        }
+
+        .glass-panel {
+            box-shadow: none;
+            border: none;
+        }
+    }
+</style>
+{% endblock %}

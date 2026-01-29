@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h1>👨‍🍳 Mes Recettes</h1>
+    <a href="/recipes/add" class="btn btn-primary">Ajouter une Recette</a>
+</div>
+
+<div class="recipe-grid">
+    {% for recipe in recipes %}
+    <div class="glass-panel recipe-card">
+        <div class="recipe-card-content">
+            <span class="category-tag">{{ recipe.category }}</span>
+            <h2 style="margin-top: 0;">{{ recipe.title }}</h2>
+            <div style="display: flex; gap: 1rem; color: #666; font-size: 0.9rem; margin-bottom: 1rem;">
+                <span><i data-lucide="clock" style="width: 14px;"></i> {{ recipe.total_time }} min</span>
+                <span><i data-lucide="shopping-basket" style="width: 14px;"></i> {{ recipe.ingredients|length }}
+                    ingrédients</span>
+            </div>
+
+            <p style="font-size: 0.9rem; color: #444; line-height: 1.5;">
+                {{ recipe.instructions[:100] }}{% if recipe.instructions|length > 100 %}...{% endif %}
+            </p>
+
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+                <a href="/recipes/delete/{{ recipe.id }}" class="btn btn-danger"
+                    onclick="return confirm('Supprimer cette recette ?')" style="padding: 0.5rem 1rem;">
+                    <i data-lucide="trash-2" style="width: 16px;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not recipes %}
+<div class="glass-panel" style="text-align: center; padding: 4rem;">
+    <p>Vous n'avez pas encore de recettes.</p>
+    <a href="/recipes/add" class="btn btn-outline" style="margin-top: 1rem;">Créer ma première recette</a>
+</div>
+{% endif %}
+{% endblock %}
